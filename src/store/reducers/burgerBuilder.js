@@ -1,13 +1,9 @@
 import * as actionType from '../actions/actionTypes'
 
 const initialState = {
-    ingredients: {
-        salad: 0,
-        bacon: 0,
-        cheese: 0,
-        meat: 0
-    },
+    ingredients: null,
     totalPrice: 4,
+    error: false
 }
 
 const INGREDIENT_PRICES = {
@@ -17,16 +13,16 @@ const INGREDIENT_PRICES = {
     bacon: 0.7
 }
 
-export default (state = initialState, { type, ingredientName }) => {
-    switch (type) {
+export default (state = initialState, action) => {
+    switch (action.type) {
         case actionType.ADD_INGREDIENT:
             return {
                 ...state,
                 ingredients: {
                     ...state.ingredients,
-                    [ingredientName]: state.ingredients[ingredientName] + 1
+                    [action.ingredientName]: state.ingredients[action.ingredientName] + 1
                 },
-                totalPrice: state.totalPrice + INGREDIENT_PRICES[ingredientName]
+                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]
             }
 
         case actionType.REMOVE_INGREDIENT:
@@ -34,9 +30,20 @@ export default (state = initialState, { type, ingredientName }) => {
                 ...state,
                 ingredients: {
                     ...state.ingredients,
-                    [ingredientName]: state.ingredients[ingredientName] - 1
+                    [action.ingredientName]: state.ingredients[action.ingredientName] - 1
                 },
-                totalPrice: state.totalPrice - INGREDIENT_PRICES[ingredientName]
+                totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
+            }
+        case actionType.SET_INGREDIENTS:
+            return {
+                ...state,
+                ingredients: action.ingredients,
+                error: false
+            }
+        case actionType.FETCH_INGREDIENT_FAILED:
+            return {
+                ...state,
+                error: true
             }
         default:
             return state

@@ -14,18 +14,10 @@ class BurgerBuilder extends Component {
     state = {
         purchasable: false,
         purchasing: false,
-        loading: false,
-        error: false
     }
 
     componentDidMount = () => {
-        // axios.get('/ingredients.json')
-        //     .then(response => {
-        //         this.setState({ ingredients: response.data })
-        //     })
-        //     .catch(error => {
-        //         this.setState({ error: true })
-        //     })
+        this.props.onInitIngredients()
     }
 
     updatePurchaseState = ingredients => {
@@ -58,20 +50,16 @@ class BurgerBuilder extends Component {
             <>
                 <Modal show={this.state.purchasing} modalClose={this.purchaseCancelHandler}>
                     {
-                        this.state.loading
+                        this.props.ings
                             ?
-                            <Spinner />
+                            <OrderSummary
+                                ingredients={this.props.ings}
+                                totalPrice={this.props.price}
+                                purchaseCancelHandler={this.purchaseCancelHandler}
+                                purchaseContinueHandler={this.purchaseContinueHandler}
+                            />
                             :
-                            this.props.ings
-                                ?
-                                <OrderSummary
-                                    ingredients={this.props.ings}
-                                    totalPrice={this.props.price}
-                                    purchaseCancelHandler={this.purchaseCancelHandler}
-                                    purchaseContinueHandler={this.purchaseContinueHandler}
-                                />
-                                :
-                                null
+                            null
                     }
                 </Modal>
                 {this.props.ings
@@ -98,12 +86,14 @@ class BurgerBuilder extends Component {
 const mapStateToProps = state => {
     return {
         ings: state.ingredients,
-        price: state.totalPrice
+        price: state.totalPrice,
+        error: state.error
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
+        onInitIngredients: () => dispatch(actions.initIngredients()),
         onIngredientAdded: ingName => dispatch(actions.addIngredient(ingName)),
         onIngredientRemoved: ingName => dispatch(actions.removeIngredient(ingName))
     }
