@@ -12,7 +12,6 @@ import * as actionType from '../../store/actions'
 class BurgerBuilder extends Component {
 
     state = {
-        totalPrice: 4,
         purchasable: false,
         purchasing: false,
         loading: false,
