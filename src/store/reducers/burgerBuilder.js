@@ -1,4 +1,4 @@
-import * as actionType from './actions'
+import * as actionType from '../actions/actionTypes'
 
 const initialState = {
     ingredients: {
@@ -17,16 +17,16 @@ const INGREDIENT_PRICES = {
     bacon: 0.7
 }
 
-export default (state = initialState, { type, payload }) => {
+export default (state = initialState, { type, ingredientName }) => {
     switch (type) {
         case actionType.ADD_INGREDIENT:
             return {
                 ...state,
                 ingredients: {
                     ...state.ingredients,
-                    [payload.ingredientName]: state.ingredients[payload.ingredientName] + 1
+                    [ingredientName]: state.ingredients[ingredientName] + 1
                 },
-                totalPrice: state.totalPrice + INGREDIENT_PRICES[payload.ingredientName]
+                totalPrice: state.totalPrice + INGREDIENT_PRICES[ingredientName]
             }
 
         case actionType.REMOVE_INGREDIENT:
@@ -34,9 +34,9 @@ export default (state = initialState, { type, payload }) => {
                 ...state,
                 ingredients: {
                     ...state.ingredients,
-                    [payload.ingredientName]: state.ingredients[payload.ingredientName] - 1
+                    [ingredientName]: state.ingredients[ingredientName] - 1
                 },
-                totalPrice: state.totalPrice - INGREDIENT_PRICES[payload.ingredientName]
+                totalPrice: state.totalPrice - INGREDIENT_PRICES[ingredientName]
             }
         default:
             return state
