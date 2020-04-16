@@ -16,7 +16,7 @@ class Orders extends Component {
         return (
             <div>
                 {
-                    this.props.loading
+                    !this.props.loading
                         ?
                         this.props.orders.map(order =>
                             <Order

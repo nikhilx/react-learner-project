@@ -34,7 +34,7 @@ export default (state = initialState, action) => {
                 ...state,
                 purchased: false
             }
-        case actionTypes.FETCH_ORDERS_INIT:
+        case actionTypes.FETCH_ORDERS_START:
             return {
                 ...state,
                 loading: true

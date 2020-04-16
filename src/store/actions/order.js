@@ -43,22 +43,25 @@ const fetchOrdersFail = error => ({
 })
 
 export const fetchOrdersStart = () => ({
-    type: actionTypes.FETCH_ORDERS_INIT
+    type: actionTypes.FETCH_ORDERS_START
 })
 
 export const fetchOrders = () => {
-    return dispatch => axios.get('/orders.json')
-        .then(res => {
-            const fetchdOrders = []
-            for (let key in res.data) {
-                fetchdOrders.push({
-                    ...res.data[key],
-                    id: key
-                })
-            }
-            dispatch(fetchOrdersSuccess(fetchOrders))
-        })
-        .catch(error => {
-            dispatch(fetchOrdersFail(error))
-        })
+    return dispatch => {
+        dispatch(fetchOrdersStart())
+        axios.get('/orders.json')
+            .then(res => {
+                const fetchedOrders = []
+                for (let key in res.data) {
+                    fetchedOrders.push({
+                        ...res.data[key],
+                        id: key
+                    })
+                }
+                dispatch(fetchOrdersSuccess(fetchedOrders))
+            })
+            .catch(error => {
+                dispatch(fetchOrdersFail(error))
+            })
+    }
 }
