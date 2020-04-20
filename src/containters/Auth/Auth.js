@@ -5,6 +5,7 @@ import classes from './Auth.module.css'
 import * as actions from '../../store/actions'
 import { connect } from 'react-redux'
 import Spinner from '../../components/UI/Spinner/Spinner'
+import { Redirect } from 'react-router'
 
 class Auth extends Component {
 
@@ -103,7 +104,8 @@ class Auth extends Component {
             })
         }
 
-        return (
+        return !this.props.isAuthenticated
+            ?
             <div className={classes.Auth}>
                 {
                     !this.props.loading
@@ -138,15 +140,16 @@ class Auth extends Component {
                     SWITCH TO {!this.state.isSignUp ? 'SIGN UP' : 'SIGN IN'}
                 </Button>
             </div>
-
-        )
+            :
+            <Redirect to="/" />
     }
 }
 
 const mapStateToProps = state => {
     return {
         loading: state.auth.loading,
-        error: state.auth.error
+        error: state.auth.error,
+        isAuthenticated: state.auth.token !== null
     }
 }
 

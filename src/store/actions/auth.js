@@ -16,7 +16,7 @@ const authFail = error => ({
     error
 })
 
-const logout = () => ({
+export const logout = () => ({
     type: actionTypes.AUTH_LOGOUT
 })
 
@@ -34,7 +34,7 @@ export const auth = (email, password, isSignUp) => {
         const authData = {
             email,
             password,
-            returnSecureTokn: true
+            returnSecureToken: true
         }
         let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCPIoun15yZW_8BfD37_gGWJlDml1DStHI'
         if (!isSignUp) {
