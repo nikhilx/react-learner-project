@@ -17,7 +17,7 @@ const SideDrawer = props => {
                 show={props.showSideDrawer}
                 modalClose={props.sideDrawerHandler}
             />
-            <div className={attachedClasses.join(' ')}>
+            <div className={attachedClasses.join(' ')} onClick={props.sideDrawerHandler}>
                 <div className={classes.Logo}>
                     <Logo />
                 </div>

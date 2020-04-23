@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Layout from './containters/Layout/Layout';
 import BurgerBuilder from './containters/BurgerBuilder/BurgerBuilder';
-import Checkout from './containters/Checkout/Checkout'
 import { Route, Switch, withRouter, Redirect } from 'react-router';
-import Orders from './containters/Orders/Orders'
-import Auth from './containters/Auth/Auth';
 import Logout from './containters/Auth/Logout/Logout';
 import * as actions from './store/actions'
 import { connect } from 'react-redux';
+
+const Checkout = React.lazy(() => import('./containters/Checkout/Checkout'))
+const Orders = React.lazy(() => import('./containters/Orders/Orders'))
+const Auth = React.lazy(() => import('./containters/Auth/Auth'))
 
 class App extends Component {
 
@@ -18,18 +19,20 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Layout>
-          <Switch>
-            {this.props.isAuthenticated && <Route path="/checkout" component={Checkout} />}
-            {this.props.isAuthenticated && <Route exact path="/orders" component={Orders} />}
-            <Route exact path="/auth" component={Auth} />
-            {this.props.isAuthenticated && <Route exact path="/logout" component={Logout} />}
-            <Route exact path="/" component={BurgerBuilder} />
-            <Redirect to="/" />
-            <Orders />
-          </Switch>
-        </Layout>
-      </div>
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <Layout>
+            <Switch>
+              {this.props.isAuthenticated && <Route path="/checkout" component={Checkout} />}
+              {this.props.isAuthenticated && <Route exact path="/orders" component={Orders} />}
+              <Route exact path="/auth" component={Auth} />
+              {this.props.isAuthenticated && <Route exact path="/logout" component={Logout} />}
+              <Route exact path="/" component={BurgerBuilder} />
+              <Redirect to="/" />
+              <Orders />
+            </Switch>
+          </Layout>
+        </React.Suspense >
+      </div >
     )
   }
 }
